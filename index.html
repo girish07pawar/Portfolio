@@ -113,10 +113,68 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #1e40af;
         }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75); /* Darker background with opacity */
+            backdrop-filter: blur(8px); /* Blur effect */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000; /* Ensure it's on top */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #1a202c; /* Darker background for the modal card */
+            border: 1px solid #2563eb; /* Blue border */
+            border-radius: 0.75rem; /* rounded-lg */
+            padding: 2rem; /* p-8 */
+            max-width: 48rem; /* max-w-3xl (adjust as needed) */
+            margin: 1rem; /* mx-4 */
+            position: relative;
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            max-height: 90vh; /* Limit height to prevent overflow */
+            overflow-y: auto; /* Enable scrolling for long content */
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #9ca3af; /* gray-400 */
+            font-size: 1.5rem; /* text-2xl */
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close-button:hover {
+            color: #fff;
+        }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="fixed top-0 left-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50 border-b border-blue-900">
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
@@ -132,7 +190,6 @@
                 </button>
             </div>
         </div>
-        <!-- Mobile Menu -->
         <div class="md:hidden hidden bg-black bg-opacity-95 w-full" id="mobile-menu">
             <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
                 <a href="#about" class="text-white hover:text-blue-500 py-2">About</a>
@@ -143,13 +200,11 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <header class="matrix-bg min-h-screen flex items-center justify-center">
         <div class="container mx-auto px-4 text-center">
             <div class="mb-6 mx-auto w-40 h-40 rounded-full overflow-hidden border-4 border-blue-500">
-                <!-- Empty space for profile picture -->
                 <div class="w-full h-full bg-gray-800 flex items-center justify-center">
-                   <img src="static/GirishPFP_square_adjusted.jpg" alt="Girish Pawar" class="w-full h-full object-cover rounded-full">
+                   <img src="static/PFP.jpg" alt="Girish Pawar" class="w-full h-full object-cover rounded-full">
                 </div>
             </div>
             <h1 class="text-5xl md:text-6xl font-bold mb-4">Hey, I'm <span class="text-blue-500">Girish Pawar</span></h1>
@@ -160,7 +215,6 @@
         </div>
     </header>
 
-    <!-- About Section -->
     <section id="about" class="py-20 section">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-12 text-center">About <span class="text-blue-500">Me</span></h2>
@@ -221,17 +275,14 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
     <section id="projects" class="py-20 bg-gray-900 section">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-12 text-center">My <span class="text-blue-500">Projects</span></h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Project 1 -->
                 <div class="project-card bg-black bg-opacity-60 border border-blue-900 rounded-xl overflow-hidden">
                     <div class="aspect-video bg-gray-800 relative">
-                        <!-- Project Image Placeholder -->
                         <div class="absolute inset-0 flex items-center justify-center bg-gray-800">
-                            <img src="static/medicure.jpg" alt="PriceWheel" class="w-full h-full object-cover">
+                            <img src="static/medicure.jpg" alt="Medicure" class="w-full h-full object-cover">
                         </div>
                     </div>
                     <div class="p-6">
@@ -248,17 +299,15 @@
                             <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out">
                                 <i class="fas fa-download mr-2"></i> Download
                             </a>
-                            <a href="#" class="inline-block bg-transparent border border-blue-600 hover:bg-blue-900 hover:bg-opacity-30 text-blue-400 font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out">
+                            <button class="inline-block bg-transparent border border-blue-600 hover:bg-blue-900 hover:bg-opacity-30 text-blue-400 font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out" id="openMedicureDetails">
                                 <i class="fas fa-info-circle mr-2"></i> Details
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Project 2 -->
                 <div class="project-card bg-black bg-opacity-60 border border-blue-900 rounded-xl overflow-hidden">
                     <div class="aspect-video bg-gray-800 relative">
-                        <!-- Project Image Placeholder -->
                         <div class="absolute inset-0 flex items-center justify-center bg-gray-800">
                            <img src="static/PriceWheel.png" alt="PriceWheel" class="w-full h-full object-cover">
                         </div>
@@ -277,9 +326,9 @@
                             <a href="https://backup-predectionmodel25.onrender.com/" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out">
                                 <i class="fas fa-code mr-2"></i> View
                             </a>
-                            <a href="#" class="inline-block bg-transparent border border-blue-600 hover:bg-blue-900 hover:bg-opacity-30 text-blue-400 font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out">
+                            <button class="inline-block bg-transparent border border-blue-600 hover:bg-blue-900 hover:bg-opacity-30 text-blue-400 font-medium py-2 px-4 rounded-md transition duration-300 ease-in-out" id="openPriceWheelDetails">
                                 <i class="fas fa-info-circle mr-2"></i> Details
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -287,15 +336,78 @@
         </div>
     </section>
 
-    <!-- Certificates Section -->
+    <div id="priceWheelModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-button" id="closePriceWheelModal">&times;</button>
+            <h3 class="text-3xl font-bold mb-4 text-blue-400">PriceWheel Project Details</h3>
+            
+            <h4 class="text-xl font-semibold mb-2">Technologies Used:</h4>
+            <ul class="list-disc list-inside ml-4 mb-4 text-gray-300">
+                <li><span class="font-medium text-blue-300">Backend:</span> Python, FastAPI</li>
+                <li><span class="font-medium text-blue-300">Frontend:</span> HTML, CSS, Tailwind CSS, JavaScript</li>
+                <li><span class="font-medium text-blue-300">Machine Learning:</span> Trained regression models for price prediction</li>
+                <li><span class="font-medium text-blue-300">Database:</span> MySQL (for user authentication and listings)</li>
+            </ul>
+
+            <h4 class="text-xl font-semibold mb-2">🚗 Project Overview:</h4>
+            <p class="mb-4 text-gray-300">
+                Price Wheel is a smart web-based platform that predicts the resale price of a car using AI/ML models and offers a user-friendly car marketplace for buying and selling vehicles.
+            </p>
+
+            <h4 class="text-xl font-semibold mb-2">🔍 Key Features:</h4>
+            <ul class="list-disc list-inside ml-4 mb-4 text-gray-300">
+                <li><span class="font-medium text-blue-300">Car Price Prediction:</span> Users can estimate a car’s selling price by inputting details such as brand, model, year, fuel type, transmission, and more.</li>
+                <li><span class="font-medium text-blue-300">User Authentication:</span>
+                    <ul class="list-circle list-inside ml-6">
+                        <li>Secure sign-up and login system using FastAPI and MySQL</li>
+                        <li>Email verification for new account registration</li>
+                        <li>Access control for logged-in users to use advanced features</li>
+                    </ul>
+                </li>
+                <li><span class="font-medium text-blue-300">Marketplace Functionality:</span>
+                    <ul class="list-circle list-inside ml-6">
+                        <li>Users can list their cars for sale</li>
+                        <li>Buyers can browse both user-listed and showroom-listed cars</li>
+                        <li>Listings open in a new page (same tab) for smooth experience</li>
+                    </ul>
+                </li>
+                <li><span class="font-medium text-blue-300">Chat Box Feature (Inspired by Mia – NFS Most Wanted):</span> A cool AI-style assistant chat box is planned for user interaction, support, and future smart search/filter features.</li>
+            </ul>
+
+            <h4 class="text-xl font-semibold mb-2">💡 Goal of the Project:</h4>
+            <p class="text-gray-300">
+                To simplify the car selling/buying process with AI-powered pricing, while building an all-in-one platform with secure login, car listing, and a modern UI/UX.
+            </p>
+        </div>
+    </div>
+
+    <div id="medicureModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button class="modal-close-button" id="closeMedicureModal">&times;</button>
+            <h3 class="text-3xl font-bold mb-4 text-blue-400">Medicure Project Details</h3>
+            
+            <h4 class="text-xl font-semibold mb-2">Project Overview:</h4>
+            <p class="mb-4 text-gray-300">
+                Medicure is an innovative health-tech project developed to simplify access to medicines and healthcare professionals. Designed during the COVID-19 pandemic, it aims to connect patients with nearby medical stores and doctors through a single platform. Users can search, upload prescriptions, purchase medicines, and even consult doctors (like dermatologists, endocrinologists, and family physicians) via video calls. Unlike existing platforms like Apollo or PharmEasy, Medicure acts as a mediator—enabling local medical stores and doctors to register and reach patients directly. This not only enhances accessibility but also helps patients with chronic conditions such as asthma, arthritis, or diabetes to receive timely medications at their doorstep.
+            </p>
+
+            <h4 class="text-xl font-semibold mb-2">Key Features:</h4>
+            <ul class="list-disc list-inside ml-4 mb-4 text-gray-300">
+                <li>Doctor consultations</li>
+                <li>Online prescription upload</li>
+                <li>Medicine home delivery from nearby stores</li>
+                <li>Doctor reviews and ratings</li>
+                <li>Revenue generation through delivery services</li>
+            </ul>
+        </div>
+    </div>
+
     <section id="certificates" class="py-20 section">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-12 text-center">My <span class="text-blue-500">Certificates</span></h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Certificate 1 -->
                 <div class="certificate-card bg-black bg-opacity-60 border border-blue-900 rounded-xl overflow-hidden">
                     <div class="aspect-square bg-gray-800 relative">
-                        <!-- Certificate Image Placeholder -->
                         <div class="absolute inset-0 flex items-center justify-center bg-gray-800">
                             <img src="static/Innovation Hub.png" alt="Certificate 1" class="w-full h-full object-cover">
                         </div>
@@ -306,10 +418,8 @@
                     </div>
                 </div>
                 
-                <!-- Certificate 2 -->
                 <div class="certificate-card bg-black bg-opacity-60 border border-blue-900 rounded-xl overflow-hidden">
                     <div class="aspect-square bg-gray-800 relative">
-                        <!-- Certificate Image Placeholder -->
                         <div class="absolute inset-0 flex items-center justify-center bg-gray-800">
                             <img src="static/Research paper.png" alt="Certificate 1" class="w-full h-full object-cover">
                         </div>
@@ -320,10 +430,8 @@
                     </div>
                 </div>
                 
-                <!-- Certificate 3 -->
                 <div class="certificate-card bg-black bg-opacity-60 border border-blue-900 rounded-xl overflow-hidden">
                     <div class="aspect-square bg-gray-800 relative">
-                        <!-- Certificate Image Placeholder -->
                         <div class="absolute inset-0 flex items-center justify-center bg-gray-800">
                             <img src="static/DBMS.png" alt="Certificate 1" class="w-full h-full object-cover">
                         </div>
@@ -337,7 +445,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="py-20 bg-gray-900 section">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-12 text-center">Contact <span class="text-blue-500">Me</span></h2>
@@ -395,7 +502,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="py-8 border-t border-blue-900">
         <div class="container mx-auto px-4 text-center">
             <div class="flex justify-center space-x-6 mb-6">
@@ -497,6 +603,70 @@
                 }
             });
         });
+
+        // MODAL FUNCTIONALITY
+        // Get references to the buttons and modals
+        const openPriceWheelDetailsBtn = document.getElementById('openPriceWheelDetails');
+        const priceWheelModal = document.getElementById('priceWheelModal');
+        const closePriceWheelModalBtn = document.getElementById('closePriceWheelModal');
+
+        const openMedicureDetailsBtn = document.getElementById('openMedicureDetails');
+        const medicureModal = document.getElementById('medicureModal');
+        const closeMedicureModalBtn = document.getElementById('closeMedicureModal');
+
+        // Function to open a modal
+        function openModal(modalElement) {
+            modalElement.classList.add('show');
+            modalElement.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        }
+
+        // Function to close a modal
+        function closeModal(modalElement) {
+            modalElement.classList.remove('show');
+            modalElement.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Event listeners for PriceWheel modal
+        if (openPriceWheelDetailsBtn) {
+            openPriceWheelDetailsBtn.addEventListener('click', () => {
+                openModal(priceWheelModal);
+            });
+        }
+        if (closePriceWheelModalBtn) {
+            closePriceWheelModalBtn.addEventListener('click', () => {
+                closeModal(priceWheelModal);
+            });
+        }
+        // Close modal if clicking outside the content
+        if (priceWheelModal) {
+            priceWheelModal.addEventListener('click', (e) => {
+                if (e.target === priceWheelModal) {
+                    closeModal(priceWheelModal);
+                }
+            });
+        }
+
+        // Event listeners for Medicure modal
+        if (openMedicureDetailsBtn) {
+            openMedicureDetailsBtn.addEventListener('click', () => {
+                openModal(medicureModal);
+            });
+        }
+        if (closeMedicureModalBtn) {
+            closeMedicureModalBtn.addEventListener('click', () => {
+                closeModal(medicureModal);
+            });
+        }
+        // Close modal if clicking outside the content
+        if (medicureModal) {
+            medicureModal.addEventListener('click', (e) => {
+                if (e.target === medicureModal) {
+                    closeModal(medicureModal);
+                }
+            });
+        }
     </script>
 </body>
 </html>
